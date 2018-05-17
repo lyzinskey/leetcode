@@ -43,7 +43,12 @@ public int strStr(String haystack, String needle) {
         return -1;
     }
 
+
 //another cheating way is to use int indexOf(String str)
+//This method returns the index within this string of the first occurrence of the specified character or -1, 
+//if the character does not occur.
+//
+//
 //    public int strStr(String haystack, String needle) {
 //        if (needle.isEmpty()) {
 //            return 0;
