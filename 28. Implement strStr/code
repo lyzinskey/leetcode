@@ -43,7 +43,7 @@ public int strStr(String haystack, String needle) {
         return -1;
     }
 
-
+//another cheating way is to use int indexOf(String str)
 //    public int strStr(String haystack, String needle) {
 //        if (needle.isEmpty()) {
 //            return 0;
