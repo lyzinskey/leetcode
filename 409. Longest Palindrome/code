@@ -22,6 +22,7 @@ public static int longestPalindrome(String s) {
         Set<Character> set = new HashSet<>();
         int len = 0;
         for (char c : s.toCharArray()) {
+        
             //public boolean remove(Object o)
             //The method call returns 'true' if the set contained the specified element.
             if (set.remove(c)){
@@ -31,6 +32,7 @@ public static int longestPalindrome(String s) {
                 set.add(c);
             }
         }
+        
         //if the set is empty, it means the palindrome only consists of letters with equal partners
         //else the palindrome consists of a unique center (without a partner)
         return set.size() > 0 ? len+1: len;
