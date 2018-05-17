@@ -26,10 +26,12 @@ public int strStr(String haystack, String needle) {
         int i = 0;
         int j = 0;
         while (i < haystack.length() && j < needle.length()){
+            //compare letter by letter
             if (haystack.charAt(i) == needle.charAt(j)){
                 i++;
                 j++;
             }
+            //back to the first character of last comparison and start comparing from the next character
             else {
                 i = i - j + 1;
                 j = 0;
