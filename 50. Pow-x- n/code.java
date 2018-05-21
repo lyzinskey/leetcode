@@ -20,8 +20,7 @@
 //-100.0 < x < 100.0
 //n is a 32-bit signed integer, within the range [−231, 231 − 1]
 
-
-    //recursion solution
+  
     public double myPow(double x, int n) {
         double ans = Integer.MIN_VALUE;
         if (n > 0){
@@ -34,6 +33,7 @@
         return ans;
     }
 
+    //recursion solution
     private static double fastPow(double x, int n){
         if (x == 0) {
             return 0;
@@ -52,3 +52,26 @@
             return temp * temp * x;
         }
     }
+
+
+//    //non-recursion solution
+//    private static double fastPow(double x, int n){
+//        if (x == 0) {
+//            return 0;
+//        }
+//        if (n == 0) {
+//            return 1;
+//        }
+//
+//        double ans = 1;
+//        double base = x;
+//        while (n != 0){
+//            //n is odd, have to multiple base one more time
+//            if (n % 2 == 1 || n % 2 == -1) {
+//                ans *= base;
+//            }
+//            base *= base;
+//            n = n / 2;
+//        }
+//        return ans;
+//    }
