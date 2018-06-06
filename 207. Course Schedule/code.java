@@ -62,7 +62,7 @@
             int size = edges[course].size();
             courseCounter++;
             for (int i = 0; i < size; i++) {
-                int nextCourse= edges[course].get(i);
+                int nextCourse = edges[course].get(i);
                 degree[nextCourse]--;
                 if (degree[nextCourse] == 0){
                     queue.offer(nextCourse);
