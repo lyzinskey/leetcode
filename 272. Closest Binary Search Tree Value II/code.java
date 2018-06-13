@@ -134,6 +134,11 @@ class Solution {
 
 
     // 最优算法，时间复杂度 O(k + logn)，空间复杂度 O(logn)
+    // 时间复杂度分析：Stack的push和pop时间复杂度均为O(1)，因此getStack需要O(logn)时间；
+    //              再加上往values中add总计k次，总时间复杂度为O(k + logn)
+    // 空间复杂度分析：题目已经说明输入BST是balanced，
+    //              upperStack和lowerStack在树的每一层添加一个点，因此空间复杂度为O(logn)
+    
     // 实现如下的子函数：
     // getStack() => 在假装插入 target 的时候，看看一路走过的节点都是哪些，放到 stack 里，用于 iterate
     // moveUpper(stack) => 根据 stack，挪动到 next node
