@@ -133,14 +133,13 @@ class Solution {
 }
 
 
-
     // 最优算法，时间复杂度 O(k + logn)，空间复杂度 O(logn)
     // 实现如下的子函数：
     // getStack() => 在假装插入 target 的时候，看看一路走过的节点都是哪些，放到 stack 里，用于 iterate
     // moveUpper(stack) => 根据 stack，挪动到 next node
     // moveLower(stack) => 根据 stack, 挪动到 prev node
-    //有了这些函数之后，就可以把整个树当作一个数组一样来处理，
-    //只不过每次 i++ 的时候要用 moveUpper，i--的时候要用 moveLower 
+    // 有了这些函数之后，就可以把整个树当作一个数组一样来处理，
+    // 只不过每次 i++ 的时候要用 moveUpper，i--的时候要用 moveLower 
     public List<Integer> closestKValues(TreeNode root, double target, int k) {
         List<Integer> values = new ArrayList<>();
         
@@ -148,9 +147,15 @@ class Solution {
             return values;
         }
         
+        //lowerStack用来记录所有比target小的节点
         Stack<TreeNode> lowerStack = getStack(root, target);
+        //upperStack用来记录所有比target大的节点
         Stack<TreeNode> upperStack = new Stack<>();
+        
+        //addAll按照元素在lowerStack中的顺序完全复制到upperStack中
+        //addAll是deep copy
         upperStack.addAll(lowerStack);
+        
         if (target < lowerStack.peek().val) {
             moveLower(lowerStack);
         } else {
@@ -187,16 +192,21 @@ class Solution {
         return stack;
     }
     
+    //朝着node增大的方向移动1
     public void moveUpper(Stack<TreeNode> stack) {
         TreeNode node = stack.peek();
         if (node.right == null) {
             node = stack.pop();
+            //如果一路全是右子树的话，需要移动到第一个朝右边移动的节点
+            //这样才能保证只朝增大的方向移动1
             while (!stack.isEmpty() && stack.peek().right == node) {
                 node = stack.pop();
             }
             return;
         }
         
+        //右子树的所有数字都比当前根节点大
+        //因此大于当前根节点的最小值（upperbound）是其右子树最左边的节点
         node = node.right;
         while (node != null) {
             stack.push(node);
@@ -204,16 +214,21 @@ class Solution {
         }
     }
     
+    //朝着node减小的方向移动1
     public void moveLower(Stack<TreeNode> stack) {
         TreeNode node = stack.peek();
         if (node.left == null) {
             node = stack.pop();
+            //如果一路全是左子树的话，需要移动到第一个朝左边移动的节点
+            //这样才能保证只朝增大的方向移动1
             while (!stack.isEmpty() && stack.peek().left == node) {
                 node = stack.pop();
             }
             return;
         }
         
+        //左子树的所有数字都比当前根节点小
+        //因此小于当前根节点的最大值（lowerbound）是其左子树最右边的节点
         node = node.left;
         while (node != null) {
             stack.push(node);
