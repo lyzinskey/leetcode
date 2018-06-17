@@ -54,11 +54,15 @@ class Solution {
                 break;
             }
             
+            //去重，[1, 1, 2, 2，2]保证只使用重复元素的第一个
+            //即只用第一个1和第一个2，第二个1和第二第三个2跳过
             if (i > index && candidates[i] == candidates[i - 1]) {
                 continue;
             }
             
             subset.add(candidates[i]);
+            //index传i而不是i + 1是因为一个元素可以使用多次
+            //注意这里与上方for循环去重的区别
             dfs(candidates, target - candidates[i], i, result, subset);
             subset.remove(subset.size() - 1);
         }
