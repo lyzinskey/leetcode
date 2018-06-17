@@ -31,7 +31,6 @@
             return result;
         }
         
-//         Arrays.sort(nums);
         helper(new ArrayList<Integer>(), nums, 0, result);
         return result;
     }
@@ -75,8 +74,6 @@
             return results; // 空列表
         }
         
-//         Arrays.sort(nums);
-        
         // BFS
         Queue<List<Integer>> queue = new LinkedList<>();
         queue.offer(new LinkedList<Integer>());
@@ -106,7 +103,6 @@
     public List<List<Integer>> subsets(int[] nums) {
         List<List<Integer>> results = new ArrayList<>();        
       
-//         Arrays.sort(nums);
         dfs(nums, 0, new ArrayList<Integer>(), results);
         return results;
     }
