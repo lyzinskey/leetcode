@@ -77,12 +77,12 @@ class Solution {
                 return false;
             }
             
-            //排除两个Queen处于左上右下的情况
+            //排除两个Queen处于右上左下的情况
             if (rowIndex + cols.get(rowIndex) == row + column) {
                 return false;
             }
             
-            //排除两个Queen处于右上左下的情况
+            //排除两个Queen处于左上右下的情况            
             if (rowIndex - cols.get(rowIndex) == row - column) {
                 return false;
             }
