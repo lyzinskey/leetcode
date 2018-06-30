@@ -30,3 +30,26 @@ class Solution {
 }
 
 
+
+
+    public int firstUniqChar(String s) {
+        if (s == null || s.length() == 0) {
+            return -1;
+        }
+        
+        int[] charCounter = new int[256];
+        char[] character = s.toCharArray();
+        for (char c : character) {
+            charCounter[c]++;
+        }
+        
+        for (int i = 0; i < character.length; i++) {
+            if (charCounter[character[i]] == 1) {
+                return i;
+            }
+        }
+        
+        return -1;        
+    }
+
+
