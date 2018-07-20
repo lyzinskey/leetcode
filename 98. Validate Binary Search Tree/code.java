@@ -27,8 +27,7 @@
 
 
 
-//use inorder traversal
-//
+
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
@@ -38,6 +37,10 @@
  *     TreeNode(int x) { val = x; }
  * }
  */
+
+
+//use inorder traversal
+//
 class Solution {
     private boolean isValid;
     private TreeNode lastNode;
@@ -69,7 +72,6 @@ class Solution {
 
 //Divide & Conquer
 //
-
 class Solution {
 
     class ResultType {
@@ -126,4 +128,28 @@ class Solution {
         return result;
     }
 }
+
+
+
+
+// Recursion
+//
+class Solution {
+    public boolean isValidBST(TreeNode root) {
+        return BST_helper(root, 2147483647, -2147483648);
+    }
+  
+    private boolean BST_helper(TreeNode root, long max, long min) {
+        if (root == null) {
+            return true;
+        }    
+        
+        if ((long) root.val < min || (long) root.val > max) {
+            return false;
+        }
+    
+        return BST_helper(root.left, (long) root.val - 1, min) && BST_helper(root.right, max, (long) root.val + 1);
+    }  
+}
+
 
