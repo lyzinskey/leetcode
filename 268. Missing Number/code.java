@@ -14,6 +14,9 @@
 //Your algorithm should run in linear runtime complexity. Could you implement it using only constant extra space complexity?
 
 
+// use hashset
+//
+
     public int missingNumber(int[] nums) {
         Set<Integer> hashSet = new HashSet<>();
         
@@ -30,3 +33,23 @@
     }
     
     
+
+// bit operation
+//
+class Solution {
+    public int missingNumber(int[] nums) {
+        int xor = 0;
+        for (int i = 0; i <= nums.length; i++) {
+            xor ^= i;
+        }
+
+        for (int i = 0; i < nums.length; i++) {
+            xor ^= nums[i];
+        }
+
+        return xor;
+    }
+}
+
+
+
