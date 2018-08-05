@@ -16,6 +16,8 @@
 //Output: false
 
 
+// use recursion
+//
     public boolean isPowerOfTwo(int n) {        
         if (recursion(n) == 1){
             return true;
@@ -33,4 +35,22 @@
             return n;
         }
     }
+
+
+
+
+
+
+
+
+// use bit operation
+//
+class Solution {
+    public boolean isPowerOfTwo(int n) {        
+        return (n & (n - 1)) == 0 && n > 0;
+    }
+}
+
+
+
 
