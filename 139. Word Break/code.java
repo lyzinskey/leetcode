@@ -68,3 +68,46 @@ class Solution {
     }    
 }
 
+
+
+
+
+// DP
+//
+class Solution {
+    public boolean wordBreak(String input, List<String> dict) {
+        // boolean[] 的长度定为input.length() + 1，
+        // 省一个corner case同时方便后续思考
+        boolean[] DP = new boolean[input.length() + 1];
+        Set<String> hashset = makeDict(dict);
+        
+        // i 是从1到input.length() + 1，而不是从0到input.length()
+        // 因为boolean[]的长度为input.length() + 1
+        for (int i = 1; i < input.length() + 1; i++) {
+            if (hashset.contains(input.substring(0,i))) {
+                DP[i] = true;
+                continue;
+            }
+            // j相当于从0到i之间每一个能切的位置，只要有任何一个case满足条件，
+            // DP[i]就返回true
+            for (int j = 1; j < i; j++) {
+                if (DP[j] && hashset.contains(input.substring(j,i))) {
+                    DP[i] = true;
+                    continue;
+                }
+            }
+        }
+        return DP[input.length()];
+    }
+
+    private Set<String> makeDict(List<String> dict) {
+        Set<String> hashset = new HashSet<>();
+        for (String word : dict) {
+            hashset.add(word);
+        }
+        return hashset;
+    }    
+}
+
+
+
