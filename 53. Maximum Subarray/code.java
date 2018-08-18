@@ -45,3 +45,26 @@ class Solution {
 }
 
 
+
+// DP
+//
+class Solution {   
+    public int maxSubArray(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }        
+        
+        int lastmax = nums[0];
+        int max = nums[0];
+        
+        for (int i = 1; i < nums.length; i++) {
+            lastmax = Math.max(nums[i], nums[i] + lastmax);
+            max = Math.max(max, lastmax);
+        }
+        
+        return max;
+    }
+}
+
+
+
