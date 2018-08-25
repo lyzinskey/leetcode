@@ -73,3 +73,44 @@ class Solution {
     }
 }
 
+
+
+
+// solution 2
+//
+class Solution {
+    private int result = 0;
+    
+    public int totalNQueens(int n) {            
+        List<Integer> res = new ArrayList<>();
+        DFS(res, n);
+        return result;
+    }
+
+    private void DFS(List<Integer> res, int n) {
+        if (res.size() == n) {
+            result++;
+            return;
+        }
+
+        for (int i = 0; i < n; i++) {
+            if (valid(res, i)) {
+                res.add(i);
+                DFS(res, n);
+                res.remove(res.size() - 1);
+            }
+        }
+    }
+
+    private boolean valid(List<Integer> res, int col) {
+        for (int i = 0; i < res.size(); i++) {
+            if (res.get(i) == col || Math.abs(res.get(i) - col) == res.size() - i) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+
+
