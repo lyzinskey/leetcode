@@ -22,40 +22,39 @@
  */
 class Solution {
 
-    //using heap
+    //using priority queue
     //Time complexity: O(nlogk)
     //
-    public ListNode mergeKLists(ListNode[] lists) {
-        if (lists == null || lists.length == 0) {
-            return null;
-        }
-
-        Queue<ListNode> heap = new PriorityQueue<ListNode>(lists.length, new ListNodeComparator());
-
-        for (int i = 0; i < lists.length; i++) {
-            if (lists[i] != null) {
-                heap.add(lists[i]);
+    public ListNode mergeKLists(ListNode[] listOfLists) {           
+        List<ListNode> result = new ArrayList<>();
+        PriorityQueue<ListNode> pq = new PriorityQueue<>(new myComparator());
+        for (ListNode node : listOfLists) {
+            if (node != null) {
+                pq.offer(node);
+            }
+            else {
+                continue;
             }
         }
 
-        ListNode dummy = new ListNode(0);
-        ListNode tail = dummy;
+        ListNode dummyHead = new ListNode(0);
+        ListNode curr = dummyHead;
 
-        while (!heap.isEmpty()) {
-            ListNode head = heap.poll();
-            tail.next = head;
-            tail = tail.next;
-            if (head.next != null) {
-                heap.add(head.next);
+        while (!pq.isEmpty()) {
+            ListNode node = pq.poll();
+            curr.next = node;
+            curr = curr.next;
+            if (node.next != null) {
+                pq.offer(node.next);
             }
         }
-
-        return dummy.next;
+        return dummyHead.next;
     }
-    
-    private class ListNodeComparator implements Comparator<ListNode> {
-        public int compare(ListNode A, ListNode B) {
-            return A.val - B.val;
+
+    public class myComparator implements Comparator<ListNode> {
+        @Override
+        public int compare(ListNode o1, ListNode o2) {
+            return o1.val - o2.val;
         }
     }    
 }
