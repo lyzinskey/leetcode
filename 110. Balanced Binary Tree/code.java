@@ -29,7 +29,7 @@
 
 
 
-//Divide & Conquer
+//recursion
 //
 /**
  * Definition for a binary tree node.
@@ -40,36 +40,26 @@
  *     TreeNode(int x) { val = x; }
  * }
  */
-
-public class Solution {    
-    private int NOT_BALANCED = -1;
-    
+class Solution {
     public boolean isBalanced(TreeNode root) {
-        
-        return getDepth(root) != NOT_BALANCED;
+        return getHeight(root) == -1 ? false : true;
     }
     
-    //如果二叉树平衡就返回其高度
-    //否则返回 NOT_BALANCED
-    private int getDepth(TreeNode root){
-        if (root == null){
+    private int getHeight(TreeNode root) {
+        if (root == null) {
             return 0;
         }
         
-        int left = getDepth(root.left);
-        int right = getDepth(root.right);
+        int leftHeight = getHeight(root.left);
+        int rightHeight = getHeight(root.right);
         
-        if (Math.abs(left - right) > 1){
-            return NOT_BALANCED;
+        if (leftHeight == -1 || rightHeight ==-1 || Math.abs(leftHeight - rightHeight) > 1) {
+            return -1;
         }
-        
-        if (left == NOT_BALANCED || right == NOT_BALANCED){
-            return NOT_BALANCED;
-        }
-        
-        return Math.max(left, right) + 1;
+        return Math.max(leftHeight, rightHeight) + 1;
     }
 }
+
 
 
 
@@ -121,4 +111,6 @@ public class Solution {
         return new ResultType(true, Math.max(left.depth, right.depth) + 1);
     }
 }
+
+
 
