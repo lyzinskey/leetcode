@@ -26,37 +26,41 @@
  * }
  */
 class Solution {
-    public TreeNode buildTree(int[] preorder, int[] inorder) {
-        if (inorder.length != preorder.length){
+    public TreeNode buildTree(int[] preOrder, int[] inOrder) {
+        if (inOrder.length != preOrder.length || inOrder.length == 0){
             return null;
         }
 
-        return build(preorder, 0, preorder.length - 1, inorder, 0, inorder.length - 1);
+        Map<Integer, Integer> idxMap = new HashMap<>();
+        for (int i = 0; i < inOrder.length; i++) {
+            idxMap.put(inOrder[i], i);
+        }
+
+        return reconstruct(inOrder, 0, inOrder.length - 1,
+                preOrder, 0, preOrder.length - 1,
+                idxMap);
     }
 
-    private TreeNode build(int[] preorder, int prestart, int preend, int[] inorder, int instart, int inend){
-        if (instart > inend){
+    private TreeNode reconstruct(int[] inOrder, int inLeft, int inRight,
+                                 int[] preOrder, int preLeft, int preRight,
+                                 Map<Integer, Integer> idxMap) {
+        if (inLeft > inRight) {
             return null;
         }
 
-        TreeNode root = new TreeNode(preorder[prestart]);
+        TreeNode root = new TreeNode(preOrder[preLeft]);
+        int leftSize = idxMap.get(root.val) - inLeft;
 
-        int position = findRootPosition(inorder, instart, inend, root.val);
-
-        //找到root的position之后，左子树点的个数等于position - instart
-        root.left = build(preorder, prestart + 1, prestart + position - instart, inorder, instart, position - 1);
-        root.right = build(preorder, prestart + 1 + position - instart, preend, inorder, position + 1, inend);
-
+        root.left = reconstruct(inOrder, inLeft, inLeft + leftSize - 1,
+                preOrder, preLeft + 1, preLeft + leftSize,
+                idxMap);
+        root.right = reconstruct(inOrder, inLeft + leftSize + 1, inRight,
+                preOrder, preLeft + leftSize + 1, preRight,
+                idxMap);
         return root;
     }
-
-    private int findRootPosition(int[] tree, int start, int end, int key){
-        for (int i = start; i <= end; i++) {
-            if (tree[i] == key){
-                return i;
-            }
-        }
-        return -1;
-    }
 }
+
+
+
 
