@@ -21,39 +21,40 @@
 // 时间复杂度 log(n + m)
 //
 class Solution {
-    public double findMedianSortedArrays(int[] A, int[] B) {
-        int length = A.length + B.length;
-        
+    public double findMedianSortedArrays(int[] a, int[] b) {
+        int length = a.length + b.length;
         if (length % 2 == 0) {
-            return (findKth(A, B, 0, 0, length / 2) + findKth(A, B, 0, 0, length / 2 + 1)) / 2.0;
+            int mid1 = kthSmallest(a, 0, b, 0, length/2);
+            int mid2 = kthSmallest(a, 0, b, 0, length/2 + 1);
+            return (mid1 + mid2) / 2.0;
+        } else {
+            return kthSmallest(a, 0, b, 0, length/2 + 1);
         }
-        else {
-            return findKth(A, B, 0, 0, length / 2 + 1) * 1.0;
-        }        
     }
-    
-    private int findKth(int[] A, int[] B, int indexA, int indexB, int k) {
-        if (indexA >= A.length) {
-            return B[indexB + k - 1];
+
+    private int kthSmallest(int[] a, int aStart, int[] b, int bStart, int k) {
+        if (aStart >= a.length) {
+            return b[bStart + k - 1];
         }
-        if (indexB >= B.length) {
-            return A[indexA + k - 1];
+        if (bStart >= b.length) {
+            return a[aStart + k - 1];
         }
-        
         if (k == 1) {
-            return Math.min(A[indexA], B[indexB]);
+            return Math.min(a[aStart], b[bStart]);
         }
-        
-        int half_Kth_of_A = indexA + k / 2 - 1 < A.length ? A[indexA + k / 2 - 1] : Integer.MAX_VALUE;
-        int half_Kth_of_B = indexB + k / 2 - 1 < B.length ? B[indexB + k / 2 - 1] : Integer.MAX_VALUE;
-        
-        if (half_Kth_of_A < half_Kth_of_B) {
-            return findKth(A, B, indexA + k / 2, indexB, k - k / 2);
+
+        int aMid = aStart + k/2 - 1;
+        int bMid = bStart + k/2 - 1;
+
+        int aVal = aMid >= a.length ? Integer.MAX_VALUE : a[aMid];
+        int bVal = bMid >= b.length ? Integer.MAX_VALUE : b[bMid];
+
+        if (aVal >= bVal) {
+            return kthSmallest(a, aStart, b, bMid + 1, k - k/2);
+        } else {
+            return kthSmallest(a, aMid + 1, b, bStart, k - k/2);
         }
-        else {
-            return findKth(A, B, indexA, indexB + k / 2, k - k / 2);
-        }
-    }    
+    }     
 }
 
 
