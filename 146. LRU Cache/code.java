@@ -25,88 +25,103 @@
 
 
 
-class LRUCache {
+public class LRUCache {
+    static class Node {
+        Node next;
+        Node prev;
+        int key;
+        int value;
 
-    private int capacity, size;
-    private ListNode dummy, tail;
-    private Map<Integer, ListNode> keyToPrev;    
-    
-    public LRUCache(int capacity) {
-        this.capacity = capacity;
-        this.size = 0;
-        this.keyToPrev = new HashMap<Integer, ListNode>();
-        this.dummy = new ListNode(0, 0);
-        this.tail = this.dummy;
+        Node(int key, int value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        void update(int key, int value) {
+            this.key = key;
+            this.value = value;
+        }
     }
+
+    private final int limit;
+    private Node head;
+    private Node tail;
+    private Map<Integer, Node> map;    
     
+    /*
+    * @param capacity: An integer
+    */
+    public LRUCache(int limit) {
+        this.limit = limit;
+        this.map = new HashMap<>();
+    }
+
+    /*
+     * @param key: An integer
+     * @return: An integer
+     */
     public int get(int key) {
-        if (!keyToPrev.containsKey(key)) {
+        Node node = map.get(key);
+        if (node == null) {
             return -1;
         }
-        
-        moveToTail(key);
-        
-        return tail.val;
+        remove(node);
+        append(node);
+        return node.value;
     }
-    
+
+    /*
+     * @param key: An integer
+     * @param value: An integer
+     * @return: nothing
+     */
     public void put(int key, int value) {
-        // "get" method will move the key to the end of the linked list
-        if (get(key) != -1) {
-            ListNode prev = keyToPrev.get(key);
-            prev.next.val = value;
-            return;
+        Node node = null;
+        if (map.containsKey(key)) {
+            node = map.get(key);
+            node.value = value;
+            remove(node);
+        } else if (map.size() < limit) {
+            node = new Node(key, value);
+        } else {
+            node = tail;
+            remove(node);
+            node.update(key, value);
         }
-        
-        if (size < capacity) {
-            size++;
-            ListNode curr = new ListNode(key, value);
-            tail.next = curr;
-            keyToPrev.put(key, tail);
-            tail = curr;
-            return;
-        }
-        
-        // replace the first node with the new key,value pair
-        // after replacement, move the new node to the end of list
-        ListNode first = dummy.next;
-        keyToPrev.remove(first.key);
-        
-        first.key = key;
-        first.val = value;
-        keyToPrev.put(key, dummy);
-        moveToTail(key);
+        append(node);
     }
     
-    private void moveToTail(int key) {
-        ListNode prev = keyToPrev.get(key);
-        ListNode curr = prev.next;
-        
-        if (tail == curr) {
-            return;
+    private Node remove(Node node) {
+        map.remove(node.key);
+        if (node.prev != null) {
+            node.prev.next = node.next;
         }
-        
-        prev.next = prev.next.next;
-        tail.next = curr;
-        
-        if (prev.next != null) {
-            keyToPrev.put(prev.next.key, prev);
+        if (node.next != null) {
+            node.next.prev = node.prev;
         }
-        keyToPrev.put(curr.key, tail);
-        
-        tail = curr;
+        if (node == head) {
+            head = head.next;
+        }
+        if (node == tail) {
+            tail = tail.prev;
+        }
+        node.next = node.prev = null;
+        return node;
+    }
+
+    private Node append(Node node) {
+        map.put(node.key, node);
+        if (head == null) {
+            head = tail = node;
+        } else {
+            node.next = head;
+            head.prev = node;
+            head = node;
+        }
+        return node;
     }    
 }
 
-class ListNode {
-    public int key, val;
-    public ListNode next;
-    
-    public ListNode(int key, int val) {
-        this.key = key;
-        this.val = val;
-        this.next = null;
-    }
-}
 
 /**
  * Your LRUCache object will be instantiated and called as such:
@@ -114,6 +129,6 @@ class ListNode {
  * int param_1 = obj.get(key);
  * obj.put(key,value);
  */
- 
- 
- 
+
+
+
