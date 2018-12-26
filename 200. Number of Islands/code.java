@@ -25,65 +25,58 @@
 
 class Solution {
     public int numIslands(char[][] grid) {
-        if (grid == null || grid.length == 0 || grid[0].length == 0){
+        if (grid.length == 0 || grid[0].length == 0) {
             return 0;
         }
 
-        int row = grid.length;
-        int column = grid[0].length;
-        int island = 0;
-
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < column; j++) {
-                if (grid[i][j] == '1'){
-                    island++;
+        int result = 0;
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j] == '1') {
+                    grid[i][j] = '0';
+                    result++;
                     BFS(grid, i, j);
                 }
             }
         }
-        return island;        
+        return result;
     }
-    
-    private void BFS(char[][] grid, int n, int m){
-        int[] x = {0, 0, -1, 1};
-        int[] y = {-1, 1, 0, 0};
 
-        Queue<Coordinate> queue = new LinkedList<>();
-        queue.offer(new Coordinate(n, m));
-        grid[n][m] = '0';
+    private void BFS(char[][] grid, int i, int j) {
+        Queue<int[]> queue = new LinkedList<>();
+        queue.offer(new int[]{i, j});
 
-        while (!queue.isEmpty()){
-            Coordinate coor = queue.poll();
-            for (int i = 0; i < 4; i++) {
-                Coordinate child = new Coordinate(coor.x + x[i], coor.y + y[i]);
+        while (!queue.isEmpty()) {
+            int[] array = queue.poll();
+            int x = array[0];
+            int y = array[1];
 
-                if (OutOfBound(grid, child)){
-                    continue;
-                }
-
-                if (grid[child.x][child.y] == '1'){
-                    grid[child.x][child.y] = '0';
-                    queue.offer(child);
-                }
+            if (!outOfBound(grid, x + 1, y) && grid[x + 1][y] == '1') {
+                grid[x + 1][y] = '0';
+                queue.offer(new int[]{x + 1, y});
             }
+            if (!outOfBound(grid, x - 1, y) && grid[x - 1][y] == '1') {
+                grid[x - 1][y] = '0';
+                queue.offer(new int[]{x - 1, y});
+            }
+            if (!outOfBound(grid, x, y + 1) && grid[x][y + 1] == '1') {
+                grid[x][y + 1] = '0';
+                queue.offer(new int[]{x, y + 1});
+            }
+            if (!outOfBound(grid, x, y - 1) && grid[x][y - 1] == '1') {
+                grid[x][y - 1] = '0';
+                queue.offer(new int[]{x, y - 1});
+            }
+
         }
     }
 
-    private boolean OutOfBound(char[][] grid, Coordinate coor){
+    private boolean outOfBound(char[][] grid, int x, int y) {
         int row = grid.length;
-        int column = grid[0].length;
-        return coor.x < 0 || coor.x >= row || coor.y < 0 || coor.y >=column;
-    }
-    
-}
-
-class Coordinate {
-    int x;
-    int y;
-
-    public Coordinate(int x, int y) {
-        this.x = x;
-        this.y = y;
+        int col = grid[0].length;
+        return x < 0 || x >= row || y < 0 || y >= col;
     }
 }
+
+
 
