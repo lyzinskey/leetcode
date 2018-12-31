@@ -42,78 +42,60 @@
 
 class Solution {
     public void rotate(int[][] matrix) {
-        if (matrix.length == 0) {
-            return;
+        int start = 0;
+        int end = matrix.length - 1;
+        while (start < end) {
+            int[] temp = matrix[start];
+            matrix[start] = matrix[end];
+            matrix[end] = temp;
+            start++;
+            end--;
         }
-        helper(matrix, 0, matrix.length);
-    }
-
-    private void helper(int[][] matrix, int offset, int size) {
-        if (size <= 1) {
-            return;
-        }
-        List<Integer> topRow = getTopRow(matrix, offset, size);
-        List<Integer> bottomRow = getBottomRow(matrix, offset, size);
-        List<Integer> leftCol = getLeftCol(matrix, offset, size);
-        List<Integer> rightCol = getRightCol(matrix, offset, size);
-
-        copyTopRow(matrix, topRow, offset, size);
-        copyBottomRow(matrix, bottomRow, offset, size);
-        copyLeftCol(matrix, leftCol, offset, size);
-        copyRightCol(matrix, rightCol, offset, size);
-        helper(matrix, offset + 1, size - 2);
-    }
-
-    private List<Integer> getTopRow(int[][] matrix, int offset, int size) {
-        List<Integer> result = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            result.add(matrix[offset][i + offset]);
-        }
-        return result;
-    }
-    private List<Integer> getBottomRow(int[][] matrix, int offset, int size) {
-        List<Integer> result = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            result.add(matrix[offset + size - 1][i + offset]);
-        }
-        return result;
-    }
-    private List<Integer> getLeftCol(int[][] matrix, int offset, int size) {
-        List<Integer> result = new ArrayList<>();
-        for (int i = size - 1; i >= 0; i--) {
-            result.add(matrix[i + offset][offset]);
-        }
-        return result;
-    }
-    private List<Integer> getRightCol(int[][] matrix, int offset, int size) {
-        List<Integer> result = new ArrayList<>();
-        for (int i = size - 1; i >= 0; i--) {
-            result.add(matrix[offset + i][offset + size - 1]);
-        }
-        return result;
-    }
-
-    private void copyTopRow(int[][] matrix, List<Integer> topRow, int offset, int size) {
-        for (int i = 0; i < size; i++) {
-            matrix[offset + i][offset + size - 1] = topRow.get(i);
+        
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = i + 1; j < matrix[i].length; j++) {
+                int temp = matrix[i][j];
+                matrix[i][j] = matrix[j][i];
+                matrix[j][i] = temp;
+            }
         }
     }
-    private void copyRightCol(int[][] matrix, List<Integer> rightCol, int offset, int size) {
-        for (int i = 0; i < size; i++) {
-            matrix[offset + size - 1][i + offset] = rightCol.get(i);
-        }
-    }
-    private void copyBottomRow(int[][] matrix, List<Integer> bottomRow, int offset, int size) {
-        for (int i = 0; i < size; i++) {
-            matrix[i + offset][offset] = bottomRow.get(i);
-        }
-    }
-    private void copyLeftCol(int[][] matrix, List<Integer> leftCol, int offset, int size) {
-        for (int i = 0; i < size; i++) {
-            matrix[offset][i + offset] = leftCol.get(i);
-        }
-    }    
 }
+
+
+
+
+Here give a common method to solve the image rotation problems.
+/*
+ * clockwise rotate
+ * first reverse up to down, then swap the symmetry 
+ * 1 2 3     7 8 9     7 4 1
+ * 4 5 6  => 4 5 6  => 8 5 2
+ * 7 8 9     1 2 3     9 6 3
+*/
+void rotate(vector<vector<int> > &matrix) {
+    reverse(matrix.begin(), matrix.end());
+    for (int i = 0; i < matrix.size(); ++i) {
+        for (int j = i + 1; j < matrix[i].size(); ++j)
+            swap(matrix[i][j], matrix[j][i]);
+    }
+}
+
+/*
+ * anticlockwise rotate
+ * first reverse left to right, then swap the symmetry
+ * 1 2 3     3 2 1     3 6 9
+ * 4 5 6  => 6 5 4  => 2 5 8
+ * 7 8 9     9 8 7     1 4 7
+*/
+void anti_rotate(vector<vector<int> > &matrix) {
+    for (auto vi : matrix) reverse(vi.begin(), vi.end());
+    for (int i = 0; i < matrix.size(); ++i) {
+        for (int j = i + 1; j < matrix[i].size(); ++j)
+            swap(matrix[i][j], matrix[j][i]);
+    }
+}
+
 
 
 
