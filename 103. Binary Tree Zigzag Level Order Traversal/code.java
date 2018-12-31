@@ -17,6 +17,8 @@
 //  ]
 
 
+
+
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
@@ -28,38 +30,47 @@
  */
 class Solution {
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
-        List result = new ArrayList<TreeNode>();
-        
-        if (root == null){
+        List<List<Integer>> result = new ArrayList<>();
+        if (root == null) {
             return result;
         }
-        
-        int level = 0;
-        
-        Queue<TreeNode> queue = new LinkedList<TreeNode>();
-        queue.offer(root);
-        
-        while (!queue.isEmpty()){
-            ArrayList<Integer> child = new ArrayList<>();
-            int size = queue.size();
-            
-            for (int i = 0; i < size; i++){
-                TreeNode node = queue.poll();
-                child.add(node.val);
-                if (node.left != null){
-                    queue.offer(node.left);
-                }
-                if (node.right != null){
-                    queue.offer(node.right);
-                }
+
+        Deque<TreeNode> deque = new ArrayDeque<>();
+        deque.offerLast(root);
+        int layer = 1;
+
+        while (!deque.isEmpty()) {
+            int size = deque.size();
+            List<Integer> layerList = new ArrayList<>();
+
+            for (int i = 0; i < size; i++) {
+                if (layer == 0) {
+                    TreeNode node = deque.pollLast();
+                    layerList.add(node.val);
+                    if (node.right != null) {
+                        deque.offerFirst(node.right);
+                    }
+                    if (node.left != null) {
+                        deque.offerFirst(node.left);
+                    }
+                } else {
+                    TreeNode node = deque.pollFirst();
+                    layerList.add(node.val);
+                    if (node.left != null) {
+                        deque.offerLast(node.left);
+                    }
+                    if (node.right != null) {
+                        deque.offerLast(node.right);
+                    }
+                }                
             }
-            if(level % 2 == 1){
-                Collections.reverse(child);            
-            }
-            level++;
-            result.add(child);
+            layer = 1 - layer;
+            result.add(layerList);
         }
-        return result;        
+        return result;
     }
 }
+
+
+
 
