@@ -14,6 +14,8 @@
 //Although the above answer is in lexicographical order, your answer could be in any order you want.
 
 
+
+// Recursion, DFS
 class Solution {
     public List<String> letterCombinations(String digits) {
         List<String> result = new ArrayList<>();
@@ -54,4 +56,33 @@ class Solution {
         }
     }
 }
+
+
+
+
+// Iteration, BFS
+class Solution {
+    public List<String> letterCombinations(String digits) {
+        LinkedList<String> list = new LinkedList<>();
+        
+        if (digits.length() == 0) {
+            return list;
+        }
+        
+        String[] mapping = new String[] {"0", "1", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+        list.add("");
+        
+        while (list.peek().length() != digits.length()) {
+            String peak = list.remove();
+            String map = mapping[digits.charAt(peak.length()) - '0'];
+            char[] charArray = map.toCharArray();
+            for (char ch : charArray) {
+                list.add(peak + ch);
+            }
+        }
+        return list;
+    }
+}
+
+
 
