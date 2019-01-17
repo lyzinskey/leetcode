@@ -22,6 +22,7 @@
 
 
 
+// Solution 1: integer to string
 class Solution {
     public boolean isPalindrome(int x) {
         String s = Integer.toString(x);
@@ -44,4 +45,26 @@ class Solution {
         return true;        
     }
 }
+
+
+
+// Solution 2: reverse integer
+class Solution {
+    public boolean isPalindrome(int x) {
+        if (x < 0 || (x != 0 && x % 10 == 0)) {
+            return false;
+        }
+        
+        int result = 0;
+        
+        while (result < x) {
+            result = result * 10 + x % 10;
+            x /= 10;
+        }
+        
+        return result == x || result / 10 == x;
+    }
+}
+
+
 
