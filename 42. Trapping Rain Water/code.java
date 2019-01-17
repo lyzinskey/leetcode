@@ -14,28 +14,30 @@
 
 
 class Solution {
-    public int trap(int[] array) {
-        if (array == null || array.length == 0) {
+    public int trap(int[] height) {    
+        if (height == null || height.length == 0) {
             return 0;
         }
-    
-        int[] left = new int[array.length];
-        int[] right = new int[array.length];
-    
-        left[0] = array[0];
-        for (int i = 1; i < array.length; i++) {
-            left[i] = Math.max(left[i - 1], array[i]);
+        
+        int[] leftMax = new int[height.length];
+        int[] rightMax = new int[height.length];
+        
+        leftMax[0] = height[0];
+        for (int i = 1; i < height.length; i++) {
+            leftMax[i] = Math.max(leftMax[i - 1], height[i]);
         }
-        right[right.length - 1] = array[array.length - 1];
-        for (int i = array.length - 2; i >= 0; i--) {
-            right[i] = Math.max(right[i + 1], array[i]);
+        
+        rightMax[height.length - 1] = height[height.length - 1];
+        for (int i = height.length - 2; i >= 0; i--) {
+            rightMax[i] = Math.max(rightMax[i + 1], height[i]);
         }
-    
-        int[] water = new int[array.length];
+        
+        int water = 0;
         int sum = 0;
-        for (int i = 0; i < array.length; i++) {
-            water[i] = Math.min(left[i], right[i]) - array[i];
-            sum += water[i];
+        
+        for (int i = 0; i < height.length; i++) {
+            water = Math.min(leftMax[i], rightMax[i]) - height[i];
+            sum += water;
         }
         return sum;
     }    
