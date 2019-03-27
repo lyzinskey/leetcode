@@ -31,8 +31,7 @@ class Solution {
                 sum += b.charAt(bp--) - '0';
             }
             carry = sum > 1 ? 1 : 0;
-            sum %= 2;
-            sb.append(sum);
+            sb.append(sum % 2);
         }
         
         if (carry > 0) {
