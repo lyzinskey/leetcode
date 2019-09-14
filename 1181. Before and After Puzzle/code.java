@@ -52,7 +52,7 @@ class Solution {
     //Use the 3rd HashMap to check if there are duplicate phrases - a sole one can NOT create a puzzle, 
     //even if its first and last word are same.
     
-    //Use a TreeSet to guarantee distinct and ascending resutl.
+    //Use a TreeSet to guarantee distinct and ascending result.
     
     //Traverse the 2 HashMap's to construct the result.
     public List<String> beforeAndAfterPuzzles(String[] phrases) {
