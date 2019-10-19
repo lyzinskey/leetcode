@@ -17,7 +17,7 @@
 //c. 小于符合也一样， 所以后面的结果也都一样, 每次对当前数操作不会改变前面已经完成的结果。
 
 // swap
-// O(n)
+// Time: O(n)
 class Solution {
     public void wiggleSort(int[] nums) {
         for (int i = 1; i < nums.length; i++) {
