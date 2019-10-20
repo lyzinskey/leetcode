@@ -42,7 +42,8 @@
 
 
 
-
+//统计每种卡的frequency
+//找所有frequency的最小公因数
 class Solution {
     public boolean hasGroupsSizeX(int[] deck) {
         Map<Integer, Integer> hashmap = new HashMap<>();
