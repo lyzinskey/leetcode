@@ -62,14 +62,19 @@ class Solution {
         return common >= 2;
     }
     
-    private int gcd(int a, int b) {
-        int gcd = 1;
-        for (int i = 1; i < Math.min(a, b); i++) {
-            if (a % (i + 1) == 0 && b % (i + 1) == 0) {
-                gcd = i + 1;
-            }
-        }
-        return gcd;
+    
+    // private int gcd(int a, int b) {
+    //     int gcd = 1;
+    //     for (int i = 1; i < Math.min(a, b); i++) {
+    //         if (a % (i + 1) == 0 && b % (i + 1) == 0) {
+    //             gcd = i + 1;
+    //         }
+    //     }
+    //     return gcd;
+    // }
+    
+    private int gcd(int x, int y) {
+        return x == 0 ? y : gcd(y%x, x);
     }
 }
 
