@@ -21,55 +21,28 @@
 
 
 //    O(m+n) time and O(1) extra space
+class Solution {
     public boolean searchMatrix(int[][] matrix, int target) {
-        if (matrix == null || matrix.length == 0){
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
             return false;
         }
-        if (matrix[0] == null || matrix[0].length == 0){
-            return false;
-        }
-
-        // start searching from the left bottom
-        int row = matrix.length;
-        int column = matrix[0].length;
-        int x = row - 1;
-        int y = 0;
-
-//        Example:
-//        [1, 3, 5, 7],
-//        [2, 4, 7, 8],
-//        [3, 5, 9, 10]
-//        start searching 5 from left bottom
-
-//        After 1st searching:
-//        [3, 5, 7],
-//        [4, 7, 8],
-//        [5, 9, 10]
-//        counter = 0
-
-//        After 2nd searching:
-//        [5, 7],
-//        [7, 8],
-//        counter = 1
-
-//        After 3rd searching:
-//        [5, 7],
-//        counter = 1
-
-//        After 4th searching:
-//        [7],
-//        counter = 2
-
-        while (x >= 0 && y <= column - 1){
-            if (matrix[x][y] < target){
-                y++;
-            }
-            else if (matrix[x][y] > target){
-                x--;
-            }
-            else {
+        
+        int row = 0;
+        int col = matrix[0].length - 1;
+        
+        while (row < matrix.length && col >= 0) {
+            if (matrix[row][col] == target) {
                 return true;
+            } else if (matrix[row][col] < target) {
+                row++;
+            } else {
+                col--;
             }
         }
         return false;
     }
+}
+
+
+
+
