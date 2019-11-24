@@ -29,7 +29,7 @@
 
 
 
-// Time: O(mn + (m + n))
+// Time: O((m + n) + mn)
 // Space: O(mn)
 class Solution {
     public List<List<Integer>> pacificAtlantic(int[][] matrix) {
