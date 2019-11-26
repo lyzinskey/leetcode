@@ -44,6 +44,7 @@ class Solution {
             for (int i = 1; i <= n - l + 1; i++) {
                 // j represents the end index of current sub-problems
                 int j = i + l - 1;
+                // k is the last balloon we want to burst in every sub-problem
                 for (int k = i; k <= j; k++) {
                     dp[i][j] = Math.max(dp[i][j], dp[i][k - 1] + nums[i - 1] * nums[k] * nums[j + 1] + dp[k + 1][j]);
                 }
