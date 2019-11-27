@@ -29,6 +29,21 @@
 
 
 class Solution {
+    /*
+    Observation:
+    Number of paths start from (i, j) to out of boundary <=>
+    Number of paths start from out of boundary to (i, j)
+    
+    dp[N][i][j]: number of paths start from out of boundary to (i, j) by moving N steps
+    dp[*][x][y] = 1, if (x, y) is out of boundary
+    dp[s][i][j] = dp[s - 1][i + 1][j] 
+                + dp[s - 1][i - 1][j] 
+                + dp[s - 1][i][j + 1] 
+                + dp[s - 1][i][j - 1]
+
+    Time: O(Nmn)
+    Space: O(Nmn) -> O(mn)
+    */    
     public int findPaths(int m, int n, int N, int i, int j) {
         int[][][] dp = new int[N + 1][m][n];
         int[][] dir = new int[][] {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
