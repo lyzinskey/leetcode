@@ -16,24 +16,26 @@
 
 
 class Solution {
-    public int lengthOfLIS(int[] nums) {
-        if (nums == null || nums.length == 0) {
+    public int lengthOfLIS(int[] array) {
+        if (array.length == 0) {
             return 0;
         }
-        
-        int[] dp = new int[nums.length];
-        int result = 0;
-        
-        for (int i = 0; i < nums.length; i++) {
-            dp[i] = 1;
-            for (int j = 0; j <= i; j++) {
-                if (nums[i] > nums[j]) {
-                    dp[i] = Math.max(dp[j] + 1, dp[i]);
+
+        int[] dp = new int[array.length];
+        Arrays.fill(dp, 1);
+        int res = 1;
+
+        for (int i = 1; i < array.length; i++) {
+            int max = 0;      
+            for (int j = 0; j < i; j++) {
+                if (array[j] < array[i]) {
+                    max = Math.max(max, dp[j]);
                 }
             }
-            result = Math.max(result, dp[i]);
+            dp[i] = max + 1;
+            res = Math.max(dp[i], res);
         }
-        return result;
+        return res;
     }
 }
 
