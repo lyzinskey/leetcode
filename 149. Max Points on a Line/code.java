@@ -30,46 +30,32 @@
 
 
 
-/**
- * Definition for a point.
- * class Point {
- *     int x;
- *     int y;
- *     Point() { x = 0; y = 0; }
- *     Point(int a, int b) { x = a; y = b; }
- * }
- */
-
 import java.math.BigDecimal;
 import java.math.MathContext;
 
 class Solution {
-    public int maxPoints(Point[] points) {
+    public int maxPoints(int[][] points) {    
         int result = 0;
-
+        HashMap<BigDecimal, Integer> cnt = new HashMap<>();
+        
         for (int i = 0; i < points.length; i++) {
-            Point seed = points[i];
+            int[] seed = points[i];
             int same = 1;
             int sameX = 0;
-            int most = 0;
-            HashMap<BigDecimal, Integer> cnt = new HashMap<>();
-
-            for (int j = 0; j < points.length; j++) {
-                if (i == j) {
-                    continue;
-                }
-                Point tmp = points[j];
-                if (tmp.x == seed.x && tmp.y == seed.y) {
+            int most = 0;            
+            cnt.clear();
+            for (int j = i + 1; j < points.length; j++) {
+                int[] tmp = points[j];
+                if (tmp[0] == seed[0] && tmp[1] == seed[1]) {
                     same++;
-                } else if (tmp.x == seed.x) {
+                } else if (tmp[0] == seed[0]) {
                     sameX++;
                 } else {
                     BigDecimal slope = getSlope(tmp, seed);
                     if (!cnt.containsKey(slope)) {
-                        cnt.put(slope, 1);
-                    } else {
-                        cnt.put(slope, cnt.get(slope) + 1);
+                        cnt.put(slope, 0);
                     }
+                    cnt.put(slope, cnt.get(slope) + 1);                    
                     most = Math.max(most, cnt.get(slope));
                 }
             }
@@ -79,13 +65,14 @@ class Solution {
         return result;
     }
 
-    private static BigDecimal getSlope(Point a, Point b){
-        if(b.x == a.x){
+    private static BigDecimal getSlope(int[] a, int[] b){
+        if(b[0] == a[0]){
             return BigDecimal.valueOf(Integer.MAX_VALUE);
         }
-        return BigDecimal.valueOf(b.y -a.y).divide(BigDecimal.valueOf(b.x - a.x), new MathContext(20));
+        return BigDecimal.valueOf(b[1] -a[1]).divide(BigDecimal.valueOf(b[0] - a[0]), new MathContext(20));
     }
 }
+
 
 
 
