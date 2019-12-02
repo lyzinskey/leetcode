@@ -22,7 +22,11 @@
 
 
 
+/*
+brute force: for every word, use dfs to search every possible path in board
 
+Time: O(k*m*n * 4^l)    ->  m * n matrix, average length of word is l, size of words is k
+*/
 class Solution {
     public List<String> findWords(char[][] board, String[] words) {
         List<String> result = new ArrayList<>();
