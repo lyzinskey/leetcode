@@ -22,11 +22,96 @@
 
 
 
+
+
+/*
+using trie
+Time: O(nL^2 + QL) where n is the number of words, 
+      L is the max length of the word, Q is the number of queries.
+Space: O(nL^2)
+*/
 class WordFilter {
-    // using hashmap, generate all possible filters
-    // Time: O(nL^3 + qL) where n is the number of words
-    //       L is the max length of the word, q is the number of queries
-    // Space: O(nL^3)
+    Trie trie = new Trie();
+    public WordFilter(String[] words) {
+        for (int i = 0; i < words.length; i++) {
+            String word = words[i];
+            StringBuilder sb = new StringBuilder("{" + word);
+            trie.insert(sb.toString(), i);
+            char[] array = word.toCharArray();
+            for (int j = array.length - 1; j >= 0; j--) {
+                sb.insert(0, array[j]);
+                trie.insert(sb.toString(), i);
+            }
+        }
+    }
+
+    public int f(String prefix, String suffix) {
+        String key = suffix + "{" + prefix;
+        return trie.startsWith(key);
+    }
+}
+
+class Trie {
+    class TrieNode {
+        private TrieNode[] child;
+        private int index;
+
+        public TrieNode() {
+            this.child = new TrieNode[27];
+            this.index = 0;
+        }
+    }
+
+    private TrieNode root;
+
+    public Trie() {
+        this.root = new TrieNode();
+    }
+
+    public void insert(String word, int num) {
+        TrieNode node = root;
+        char[] array = word.toCharArray();
+        for (char ch : array) {
+            int index = ch - 'a';
+            if (node.child[index] == null) {
+                node.child[index] = new TrieNode();
+            }
+            node = node.child[index];
+            node.index = num;
+        }        
+    }
+
+    public int startsWith(String prefix) {
+        TrieNode node = find(prefix);
+        return node != null ? node.index : -1;
+    }
+
+    private TrieNode find(String input) {
+        TrieNode node = root;
+        char[] array = input.toCharArray();
+        for (char ch : array) {
+            int index = ch - 'a';
+            node = node.child[index];
+            if (node == null) {
+                return node;
+            }
+        }
+        return node;
+    }
+}
+
+
+
+
+
+
+/*
+using hashmap, generate all possible filters
+Time: O(nL^3 + qL) where n is the number of words
+      L is the max length of the word, q is the number of queries
+Space: O(nL^3)
+*/
+class WordFilter {
     private Map<String, Integer> hashmap;
 
     public WordFilter(String[] words) {
@@ -66,7 +151,6 @@ class WordFilter {
  * WordFilter obj = new WordFilter(words);
  * int param_1 = obj.f(prefix,suffix);
  */
- 
  
  
  
