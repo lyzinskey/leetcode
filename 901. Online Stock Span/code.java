@@ -34,6 +34,8 @@
 
 
 
+// Time: amortized O(1)
+// Space: O(n)
 class StockSpanner {
     private List<Integer> prices;
     private List<Integer> dp;
