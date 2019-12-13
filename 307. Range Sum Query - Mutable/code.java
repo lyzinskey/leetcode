@@ -15,46 +15,56 @@
 //You may assume the number of calls to update and sumRange function is distributed evenly.
 
 
-
-
+//Using Binary Index Tree
+//Init the tree (include building all prefix sums) takes O(nlogn)
+//Update the value of an element takes O(logn)
+//Query the range sum takes O(logn)
+//Space complexity: O(n)
+//
 class NumArray {
-    private int[] arr, bit;
-    
-    /**
-     * @return: nothing
-     */
+    private BinaryIndexTree bit;
+    private int[] array;
     public NumArray(int[] nums) {
-        arr = new int[nums.length];
-        bit = new int[nums.length + 1];
+        this.bit = new BinaryIndexTree(nums.length);
+        this.array = new int[nums.length];
         
         for (int i = 0; i < nums.length; i++) {
-            update(i, nums[i]);
+            bit.update(i + 1, nums[i]);
+            array[i] = nums[i];
         }
     }
     
-    public void update(int index, int val) {
-        int delta = val - arr[index];
-        arr[index] = val;
+    public void update(int i, int val) {
+        bit.update(i + 1, val - array[i]);
+        array[i] = val;
+    }
+    
+    public int sumRange(int i, int j) {
+        return bit.query(j + 1) - bit.query(i);
+    }
+    
+    class BinaryIndexTree {
+        int sums[];
         
-        for (int i = index + 1; i <= arr.length; i = i + lowbit(i)) {
-            bit[i] += delta;
+        public BinaryIndexTree(int n) {
+            this.sums = new int[n + 1];
         }
-    }
-    
-    public int getPrefixSum(int index) {
-        int sum = 0;
-        for (int i = index + 1; i > 0; i = i - lowbit(i)) {
-            sum += bit[i];
+        
+        public void update(int i, int delta) {
+            while (i < sums.length) {
+                sums[i] += delta;
+                i += i & -i;
+            }
         }
-        return sum;
-    }
-    
-    private int lowbit(int x) {
-        return x & (-x);
-    }
-
-    public int sumRange(int left, int right) {
-        return getPrefixSum(right) - getPrefixSum(left - 1);
+        
+        public int query(int i) {
+            int sum = 0;
+            while (i > 0) {
+                sum += sums[i];
+                i -= i & -i;
+            }
+            return sum;
+        }        
     }
 }
 
@@ -64,6 +74,7 @@ class NumArray {
  * obj.update(i,val);
  * int param_2 = obj.sumRange(i,j);
  */
+
  
  
  
