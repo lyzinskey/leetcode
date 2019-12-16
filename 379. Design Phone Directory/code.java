@@ -34,6 +34,10 @@
 
 
 
+//use an array next[] to store the next available number.
+//when a number k is issued, move pointer pos = next[k] to the next available position. set next[k]=-1
+//when a number is recycled, simply move pointer from pos to the recycled number, 
+//and change the recycled number's "next" point to pos.
 class PhoneDirectory {
     private int[] next;
     private int p;
