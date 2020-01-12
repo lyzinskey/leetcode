@@ -11,33 +11,38 @@
 //Output: "bb"
 
 
-public String longestPalindrome(String s) {
-        int start = 0, end = 0;
-        for (int i = 0; i < s.length(); i++) {
-            //palindromes with odd number of letters (such as ”abba”)
-            int len1 = expandAroundCenter(s, i, i);
-            //palindromes with even number of letters (such as ”abba”)
-            int len2 = expandAroundCenter(s, i, i + 1);
-            //len: the length of the palindrome
-            int len = Math.max(len1, len2);
-            if (len > end - start) {
+
+
+class Solution {
+    // Time: O(n^2)
+    // Space: O(1);
+    public String longestPalindrome(String s) {
+        if (s == null || s.length() == 0) {
+            return "";
+        }
+        
+        char[] array = s.toCharArray();
+        int len = 0;
+        int start = 0;
+        
+        for (int i = 0; i < array.length; i++) {         
+            int cur = Math.max(getLen(array, i, i), getLen(array, i, i + 1));
+            if (cur > len) {
+                len = cur;
                 start = i - (len - 1) / 2;
-                end = i + len / 2;
             }
         }
-
-        //public String substring(int beginIndex, int endIndex)
-        //Returns a new string that is a substring of this string.
-        //The substring begins at the specified beginIndex and extends to the character at index endIndex - 1.
-        return s.substring(start, end + 1);
+        return s.substring(start, start + len);
     }
-
-    //helper function
-    private int expandAroundCenter(String s, int left, int right) {
-        int L = left, R = right;
-        while (L >= 0 && R < s.length() && s.charAt(L) == s.charAt(R)) {
-            L--;
-            R++;
+    
+    private int getLen(char[] array, int l, int r) {
+        while (l >= 0 && r < array.length && array[l] == array[r]) {
+            l--;
+            r++;
         }
-        return R - L - 1;
+        return r - l - 1;
     }
+}
+
+
+
