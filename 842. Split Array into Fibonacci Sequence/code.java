@@ -46,6 +46,14 @@
 
 
 class Solution {
+    // The first two elements can be chosen arbitrarily
+    // and there are at most 10*10 pairs
+    // because the integer has at most 10 digits.
+    // From the third element, it must equal to the sum of previous two elements
+    // so there's no backtracking afterwards
+    //
+    // Time: O(10*10*n)
+    // Space: O(n)    
     public List<Integer> splitIntoFibonacci(String S) {
         List<Integer> result = new ArrayList<>();
         dfs(0, result, S.toCharArray());
