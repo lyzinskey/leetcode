@@ -11,39 +11,42 @@
 
 
 
+
 class Solution {
+    // Time: O(n^2)
+    // Space: O(n^2)
     public int minCut(String input) {
-        if (input.length() <= 1) {
-            return 0;
-        }
         char[] array = input.toCharArray();
-        int[] dp = new int[array.length];
-        for (int i = 0; i < dp.length; i++) {
-            if (isPalindrome(array, 0, i)) {
-                dp[i] = 0;
+        int len = array.length;
+        boolean[][] isPalindrome = new boolean[len][len];
+        int[] dp = new int[len];
+        Arrays.fill(dp, len - 1);
+        
+        // pre-processing: isPalindrome[i][j]: whether i ~ j is palindrome
+        for (int i = 0; i < len; i++) {
+            Arrays.fill(isPalindrome[i], true);
+        }
+        
+        for (int l = 2; l <= len; l++) {
+            for (int i = 0, j = i + l - 1; j < len; i++, j++) {
+                isPalindrome[i][j] = array[i] == array[j] & isPalindrome[i + 1][j - 1];
             }
-            else {
-                dp[i] = i;
-                for (int j = 1; j <= i; j++) {
-                    if (isPalindrome(array, j, i)) {
-                        dp[i] = Math.min(dp[i], dp[j - 1] + 1);
-                    }
+        }
+        
+        for (int i = 0; i < len; i++) {
+            if (isPalindrome[0][i]) {
+                dp[i] = 0;
+                continue;
+            }
+            // try every possible partition position and find min cut
+            for (int j = 0; j < i; j++) {
+                if (isPalindrome[j + 1][i]) {
+                    dp[i] = Math.min(dp[i], dp[j] + 1);
                 }
             }
         }
-        return dp[dp.length - 1];
-    }
-
-    private boolean isPalindrome(char[] input, int left, int right) {
-        while (left < right) {
-            if (input[left] != input[right]) {
-                return false;
-            }
-            left++;
-            right--;
-        }
-        return true;
-    }    
+        return dp[len - 1];
+    } 
 }
 
 
