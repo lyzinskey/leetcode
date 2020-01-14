@@ -68,9 +68,6 @@ class Solution {
         long num = 0;
         for (int i = index; i < Math.min(maxLen + index, array.length); i++) {
             num = num * 10 + (array[i] - '0');
-            if (num > Integer.MAX_VALUE) {
-                break;
-            }
             if (result.size() >= 2) {
                 int size = result.size();
                 long sum = result.get(size - 1) + result.get(size - 2);
