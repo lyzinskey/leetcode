@@ -87,6 +87,47 @@ class Solution {
         }
     }
 }
+    
+    
+
+class Solution {    
+    // union find
+    // Time: O(V + E)
+    // Space: O(V)
+    public int makeConnected(int n, int[][] connections) {
+        if (connections.length < n - 1) {
+            return -1;
+        }
+
+        int[] parent = new int[n];
+        for (int i = 0; i < n; i++) {
+            parent[i] = i;
+        }
+
+        for (int[] connection : connections) {
+            int p0 = findParent(parent, connection[0]);
+            int p1 = findParent(parent, connection[1]);
+            if (p0 != p1) {
+                parent[p0] = p1;
+            }
+        }
+
+        int components = 0;
+        for (int i = 0; i < n; i++) {
+            if (parent[i] == i) {
+                components++;
+            }
+        }
+        return components - 1;
+    }
+
+    private int findParent(int[] parent, int i) {
+        if (parent[i] != i) {
+            parent[i] = findParent(parent, parent[i]);
+        }
+        return parent[i];
+    }
+}
 
 
 
