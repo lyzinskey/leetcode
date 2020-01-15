@@ -17,6 +17,8 @@
 
 
 class Solution {
+    // Time: O(n*L^2) L is the max length of word
+    // Space: O(n)      
     public String boldWords(String[] words, String S) {
         Set<String> dict = new HashSet<>();
         int maxLen = 0;        
