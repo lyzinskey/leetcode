@@ -29,7 +29,7 @@
 //11 17 18 19 20
 //10  9  8  7  6
 //
-//The final route is marked in bold.
+//The final route is 0 -> 1 -> 2 -> 3 -> 4 -> 5 -> 16 -> 15 -> 14 -> 13 -> 12 -> 11 -> 10 -> 9 -> 8 -> 7 -> 6.
 //We need to wait until time 16 so that (0, 0) and (4, 4) are connected.
 
 //Note:
