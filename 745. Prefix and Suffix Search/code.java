@@ -106,45 +106,54 @@ class Trie {
 
 
 /*
-using hashmap, generate all possible filters
-Time: O(nL^3 + qL) where n is the number of words
+using hashmap, generate all possible prefix & suffix for each word
+Time: O(nL^2 + qL) where n is the number of words
       L is the max length of the word, q is the number of queries
-Space: O(nL^3)
+Space: O(nL)
 */
-class WordFilter {
-    private Map<String, Integer> hashmap;
+class WordFilter {    
+    Map<String, List<Integer>> prefixMap = new HashMap<>();
+    Map<String, List<Integer>> suffixMap = new HashMap<>();
 
     public WordFilter(String[] words) {
-        this.hashmap = new HashMap<>();
-        for (int index = 0; index < words.length; index++) {
-            char[] word = words[index].toCharArray();
-            StringBuilder prefix = new StringBuilder();
-            StringBuilder suffix = new StringBuilder();
-            List<String> prefixes = new ArrayList<>();
-            List<String> suffixes = new ArrayList<>();
-            prefixes.add(prefix.toString());
-            suffixes.add(suffix.toString());
-
-            for (int i = 0; i < word.length; i++) {
-                prefix.append(word[i]);
-                suffix.insert(0, word[word.length - i - 1]);
-                prefixes.add(prefix.toString());
-                suffixes.add(suffix.toString());
-            }
-
-            for (String pre : prefixes) {
-                for (String suf : suffixes) {
-                    hashmap.put(pre + "-" + suf, index);
+        for (int i = 0; i < words.length; i++) {
+            for (int j = 0; j <= words[i].length(); j++) {
+                String prefix = words[i].substring(0, j);
+                if (!prefixMap.containsKey(prefix)) {
+                    prefixMap.put(prefix, new ArrayList<>());
                 }
+                prefixMap.get(prefix).add(i);
+
+                String suffix = words[i].substring(words[i].length() - j);
+                if (!suffixMap.containsKey(suffix)) {
+                    suffixMap.put(suffix, new ArrayList<>());
+                }
+                suffixMap.get(suffix).add(i);
             }
         }
     }
 
     public int f(String prefix, String suffix) {
-        String key = prefix + "-" + suffix;
-        return hashmap.getOrDefault(key, -1);
+        if (!prefixMap.containsKey(prefix) || !suffixMap.containsKey(suffix)) {
+            return -1;
+        }
+        List<Integer> prefixList = prefixMap.get(prefix);
+        List<Integer> suffixList = suffixMap.get(suffix);
+        int i = prefixList.size() - 1;
+        int j = suffixList.size() - 1;
+        while (i >= 0 && j >= 0) {
+            if (prefixList.get(i) < suffixList.get(j)) {
+                j--;
+            } else if (prefixList.get(i) > suffixList.get(j)) {
+                i--;
+            } else {
+                return prefixList.get(i);
+            }
+        }
+        return -1;
     }
 }
+
 
 /**
  * Your WordFilter object will be instantiated and called as such:
