@@ -28,7 +28,7 @@
 class Solution {
     // dfs
     // Time: O(2^N)
-    // Space: O(N)
+    // Space: O(2^N)
     public int[] numsSameConsecDiff(int N, int K) {
         List<Integer> list = new ArrayList<>();
         if (N == 1) {
