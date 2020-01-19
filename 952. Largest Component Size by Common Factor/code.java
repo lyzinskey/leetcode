@@ -29,6 +29,9 @@
 
 
 class Solution {
+    // union find
+    // Time: O(n * sqrt(Max val of A[i]))
+    // Space: O(Max val of A[i])
     public int largestComponentSize(int[] A) {
         int max = A[0];
         for (int i = 1; i < A.length; i++) {
@@ -80,6 +83,7 @@ class Solution {
         }
     }
 }
+
 
 
 
