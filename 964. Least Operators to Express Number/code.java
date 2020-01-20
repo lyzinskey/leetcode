@@ -40,7 +40,13 @@
 
 
 class Solution {
+    // Dijkstra
+    // Find the shortest path from target to 0, the cost is the number of operators
+    // Time: O(nlogn)
+    // Space: O(nlogn)
+    // n = x * log(target) / log(x)
     public int leastOpsExpressTarget(int x, int target) {
+        // int[2] => {cost, remain}
         PriorityQueue<int[]> minheap = new PriorityQueue<>(new Comparator<int[]>() {
             @Override
             public int compare(int[] o1, int[] o2) {
@@ -50,35 +56,76 @@ class Solution {
                 return o1[0] - o2[0];
             }
         });
-        Set<Integer> s = new HashSet<>();
+        Set<Integer> hashset = new HashSet<>();
         minheap.offer(new int[]{0, target});
 
         while (!minheap.isEmpty()) {
             int[] curr = minheap.poll();
-            int c = curr[0];
-            int t = curr[1];
-            if (t == 0) {
-                return c - 1;
+            int cost = curr[0];
+            int remain = curr[1];
+            if (remain == 0) {
+                return cost - 1;
             }
-            if (s.contains(t)) {
+            if (hashset.contains(remain)) {
                 continue;
             }
-            s.add(t);
-            int n = (int) (Math.log(t) / Math.log(x));
-            int l = (int) (t - Math.pow(x, n));
-            if (!s.contains(l)) {
-                int add = (n == 0) ? 2 : n;
-                minheap.offer(new int[]{c + add, l});
+            hashset.add(remain);
+            int pow = (int) (Math.log(remain) / Math.log(x));
+            int l = (int) (remain - Math.pow(x, pow));
+            if (!hashset.contains(l)) {
+                int add = (pow == 0) ? 2 : pow;
+                minheap.offer(new int[]{cost + add, l});
             }
-            int r = (int) (Math.pow(x, n + 1) - t);
-            if (!s.contains(r)) {
-                minheap.offer(new int[]{c + n + 1, r});
+            int r = (int) (Math.pow(x, pow + 1) - remain);
+            if (!hashset.contains(r)) {
+                minheap.offer(new int[]{cost + pow + 1, r});
             }
         }
         return -1;
     }
 }
 
+
+
+
+
+
+class Solution {
+    // dp: Memoization
+    // Time: O(x * log(t)/log(x))
+    // Space: O(x * log(t)/log(x))
+    public int leastOpsExpressTarget(int x, int target) {
+        Map<Integer, Integer> hashmap = new HashMap<>();
+        return dp(x, target, hashmap);
+    }
+
+    private static int dp(int x, int t, Map<Integer, Integer> hashmap) {
+        if (t == 0) {
+            return 0;
+        }
+        if (t < x) {            
+            return Math.min(2 * t - 1, 2 * (x - t));
+        }
+        if (hashmap.containsKey(t)) {
+            return hashmap.get(t);
+        }
+        
+        int k = (int) (Math.log(t) / Math.log(x));
+        int p = (int) Math.pow(x, k);
+        if (t == p) {
+            hashmap.put(t, k - 1);
+            return k - 1;
+        }
+
+        int ans = dp(x, t - p, hashmap) + k;
+        int left = p * x - t;
+        if (left < t) {
+            ans = Math.min(ans, dp(x, left, hashmap) + k + 1);
+        }
+        hashmap.put(t, ans);
+        return ans;
+    }    
+}
 
 
 
