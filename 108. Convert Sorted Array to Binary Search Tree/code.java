@@ -27,28 +27,27 @@
  * }
  */
 class Solution {    
-    
+    // Time: O(n)
+    // Space: O(logn)
     public TreeNode sortedArrayToBST(int[] nums) {
         if (nums == null || nums.length == 0) {
             return null;
         }
-                    
-        TreeNode root = convertToBST(nums, 0, nums.length);
-        
-        return root;         
+        return convert(nums, 0, nums.length - 1);
     }
     
-    private TreeNode convertToBST(int[] nums, int start, int end) {
-        if (start >= end) {
+    private TreeNode convert(int[] nums, int left, int right) {
+        if (left > right) {
             return null;
         }
         
-        int mid = (start + end) / 2;
-        TreeNode root = new TreeNode(nums[mid]);
-        root.left = convertToBST(nums, start, mid);
-        root.right = convertToBST(nums, mid + 1, end);
-        
-        return root;
-    }    
+        int mid = left + (right - left) / 2;
+        TreeNode node = new TreeNode(nums[mid]);
+        node.left = convert(nums, left, mid - 1);
+        node.right = convert(nums, mid + 1, right);
+        return node;
+    }
 }
+
+
 
