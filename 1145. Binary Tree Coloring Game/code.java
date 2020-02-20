@@ -70,3 +70,41 @@ class Solution {
 
 
 
+
+
+class Solution {
+    // step1: find node x in tree first
+    // step2: count node x's left subtree and right subtree
+    // step3: compare left subtree, right subtree, parent subtree
+    public boolean btreeGameWinningMove(TreeNode root, int n, int x) {
+        TreeNode target = findTarget(root, x, null);
+        int left = count(target.left);
+        int right = count(target.right);
+        int max = Math.max(n - left - right - 1, Math.max(left, right));
+        return max > n / 2;
+    }
+    
+    private TreeNode findTarget(TreeNode root, int x, TreeNode node) {
+        if (root == null || root.val == x) {
+            return root;
+        }
+        if (node != null) {
+            return node;
+        }
+        TreeNode left = findTarget(root.left, x, node);
+        TreeNode right = findTarget(root.right, x, node);
+        node = left == null ? right : left;
+        return node;
+    }
+    
+    private int count(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        return count(root.left) + count(root.right) + 1;
+    }
+}
+
+
+
+
