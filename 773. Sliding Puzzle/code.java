@@ -37,63 +37,64 @@
 
 
 class Solution {
+    // Time: O((n*m)!)
+    // Space: O((n*m)!)
     public int slidingPuzzle(int[][] board) {
-        int kRows = 2;
-        int kCols = 3;
-        String goal = "";
-        String start = "";
-
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[0].length; j++) {
-                start += board[i][j];
-                goal += (i * kCols + j + 1) % (kRows * kCols);
+        int row = board.length;
+        int col = board[0].length;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                sb.append(board[i][j]);
             }
         }
+        String start = sb.toString();
+        String goal = "123450";
         if (start.equals(goal)) {
             return 0;
         }
-
-        int[][] dirs = {{-1, 0}, {1, 0}, {0, 1}, {0, -1}};
-        Set<String> visited = new HashSet<>();
+        
         int step = 0;
         Queue<String> queue = new LinkedList<>();
-        queue.offer(start);
-
+        Set<String> visited = new HashSet<>();
+        int[][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        queue.offer(start);                
+        
         while (!queue.isEmpty()) {
-            step++;
             int size = queue.size();
+            step++;
             for (int i = 0; i < size; i++) {
-                String s = queue.poll();
-                int p = s.indexOf('0');
-                int x = p % kCols;
-                int y = p / kCols;
-                for (int j = 0; j < 4; j++) {
-                    int tx = x + dirs[j][0];
-                    int ty = y + dirs[j][1];
-                    if (tx < 0 || ty < 0 || tx >= kCols || ty >= kRows) {
+                String curr = queue.poll();
+                int index = curr.indexOf('0');
+                int x = index / col;
+                int y = index % col;
+                
+                for (int[] dir : dirs) {
+                    int dx = x + dir[0];
+                    int dy = y + dir[1];
+                    if (dx < 0 || dx >= row || dy < 0 || dy >= col) {
                         continue;
                     }
-                    int pp = ty * kCols + tx;
-                    String t = swap(s, p, pp);
-                    if (visited.contains(t)) {
+                    String temp = swap(curr, index, dx * col + dy);
+                    if (visited.contains(temp)) {
                         continue;
                     }
-                    if (t.equals(goal)) {
+                    if (temp.equals(goal)) {
                         return step;
                     }
-                    visited.add(t);
-                    queue.offer(t);
+                    visited.add(temp);
+                    queue.offer(temp);
                 }
             }
         }
         return -1;
     }
-
-    private String swap(String s, int i, int j) {
-        char[] array = s.toCharArray();
-        char ch = array[i];
+    
+    private String swap(String str, int i, int j) {
+        char[] array = str.toCharArray();
+        char temp = array[i];
         array[i] = array[j];
-        array[j] = ch;
+        array[j] = temp;
         return new String(array);
     }
 }
