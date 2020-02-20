@@ -29,41 +29,41 @@
  * }
  */
 class Solution {
+    // Time: O(n)
+    // Space: O(n)
     public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
-        if (root == null || to_delete == null || to_delete.length == 0) {
-            return new ArrayList<>();
-        }
-        
-        List<TreeNode> result = new ArrayList<>();
+        List<TreeNode> res = new ArrayList<>();
         Set<Integer> hashset = new HashSet<>();
+        
         for (int num : to_delete) {
             hashset.add(num);
         }
         
-        dfs(root, result, hashset);
+        dfs(root, hashset, res);
         if (!hashset.contains(root.val)) {
-            result.add(root);
+            res.add(root);
         }
-        return result;
+        return res;
     }
     
-    private TreeNode dfs(TreeNode root, List<TreeNode> result, Set<Integer> hashset) {
+    // return the root of tree after deletion
+    private TreeNode dfs(TreeNode root, Set<Integer> hashset, List<TreeNode> res) {
         if (root == null) {
             return null;
         }
         
-        root.left = dfs(root.left, result, hashset);
-        root.right = dfs(root.right, result, hashset);
+        root.left = dfs(root.left, hashset, res);
+        root.right = dfs(root.right, hashset, res);
         if (hashset.contains(root.val)) {
             if (root.left != null) {
-                result.add(root.left);
+                res.add(root.left);
             }
             if (root.right != null) {
-                result.add(root.right);
+                res.add(root.right);
             }
             return null;
         }
-        return root;        
+        return root;
     }
 }
 
