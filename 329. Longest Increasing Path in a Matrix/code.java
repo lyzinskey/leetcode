@@ -33,6 +33,7 @@ class Solution {
     // dp (dfs + memorization)
     // Time: O(mn)
     // Space: O(mn)
+    int[][] dirs = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
     public int longestIncreasingPath(int[][] matrix) {
         if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
             return 0;
@@ -41,35 +42,29 @@ class Solution {
         int row = matrix.length;
         int col = matrix[0].length;
         int[][] dp = new int[row][col];
-        int[][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
-        int res = 0;
-        
-        for (int i = 0; i < row; i++) {
-            Arrays.fill(dp[i], -1);
-        }
-        
+        int res = 1;
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
-                res = Math.max(dfs(matrix, dp, i, j, dirs), res);
+                res = Math.max(res, dfs(matrix, dp, i, j));
             }
         }
         return res;
     }
     
-    private int dfs(int[][] matrix, int[][] dp, int i, int j, int[][] dirs) {
-        if (dp[i][j] != -1) {
-            return dp[i][j];
+    private int dfs(int[][] matrix, int[][] dp, int x, int y) {
+        if (dp[x][y] != 0) {
+            return dp[x][y];
         }
-        dp[i][j] = 1;
+        dp[x][y] = 1;
         for (int[] dir : dirs) {
-            int dx = i + dir[0];
-            int dy = j + dir[1];
-            if (dx < 0 || dx >= matrix.length || dy < 0 || dy >= matrix[0].length || matrix[i][j] >= matrix[dx][dy]) {
+            int dx = x + dir[0];
+            int dy = y + dir[1];
+            if (dx < 0 || dx >= matrix.length || dy < 0 || dy >= matrix[0].length || matrix[x][y] >= matrix[dx][dy]) {
                 continue;
             }
-            dp[i][j] = Math.max(dp[i][j], dfs(matrix, dp, dx, dy, dirs) + 1);
+            dp[x][y] = Math.max(dp[x][y], dfs(matrix, dp, dx, dy) + 1);            
         }
-        return dp[i][j];
+        return dp[x][y];
     }
 }
 
