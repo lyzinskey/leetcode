@@ -27,6 +27,32 @@
 
 
 class Solution {
+    // Time: O(l^3)
+    // Space: O(l + dict.size)
+    public boolean wordBreak(String input, List<String> dict) {
+        Set<String> hashset = new HashSet<>();
+        for (String str : dict) {
+            hashset.add(str);
+        }
+        boolean[] dp = new boolean[input.length() + 1];
+        dp[0] = true;
+        
+        for (int j = 0; j <= input.length(); j++) {
+            for (int i = j - 1; i >= 0; i--) {
+                if (dp[i] && hashset.contains(input.substring(i, j))) {
+                    dp[j] = true;
+                    break;
+                }
+            }
+        }
+        return dp[input.length()];
+    }
+}
+
+
+
+
+class Solution {
     public boolean wordBreak(String s, List<String> wordDict) {
         if (s == null || s.length() == 0) {
             return true;
@@ -108,6 +134,7 @@ class Solution {
         return hashset;
     }    
 }
+
 
 
 
