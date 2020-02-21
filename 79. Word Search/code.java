@@ -20,43 +20,36 @@
 
 
 class Solution {
+    // Time: O(m * n * 4^l)
+    // Space: O(l)
     public boolean exist(char[][] board, String word) {
-        if (board == null || board.length == 0) {
-            return false;
-        }
-        if (word == null || word.length() == 0) {
-            return true;
-        }
-        
+        char[] array = word.toCharArray();
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
-                if (board[i][j] == word.charAt(0)) {
-                    if (dfs(board, word, i, j, 0)) {
-                        return true;
-                    }
+                if (board[i][j] == word.charAt(0) && dfs(board, array, 0, i, j)) {
+                    return true;
                 }
-                
             }
         }
         return false;
     }
     
-    private boolean dfs(char[][] board, String word, int i, int j, int index) {
-        if (index == word.length()) {
+    private boolean dfs(char[][] board, char[] array, int index, int x, int y) {
+        if (index == array.length) {
             return true;
         }
-        
-        if (i < 0 || j < 0 || i >= board.length || j >= board[0].length || board[i][j] != word.charAt(index)) {
+        if (x < 0 || x >= board.length || y < 0 || y >= board[0].length || array[index] != board[x][y]) {
             return false;
         }
-        
-        board[i][j] = '?';
-        boolean result = dfs(board, word, i + 1, j, index + 1) ||
-                         dfs(board, word, i - 1, j, index + 1) ||
-                         dfs(board, word, i, j + 1, index + 1) ||
-                         dfs(board, word, i, j - 1, index + 1);
-        board[i][j] = word.charAt(index);
-        return result;
+        board[x][y] = '?';
+        boolean res = dfs(board, array, index + 1, x + 1, y) ||
+            dfs(board, array, index + 1, x - 1, y) ||
+            dfs(board, array, index + 1, x, y + 1) ||
+            dfs(board, array, index + 1, x, y - 1);
+        board[x][y] = array[index];
+        return res;
     }
 }
+
+
 
