@@ -32,27 +32,33 @@
 
 
 class Solution {
+    // Time: O(n)
+    // Space: O(1)
     public int longestMountain(int[] A) {
-        int left = 0;
-        int right = 0;
-        int result = 0;
-        
-        while (right < A.length) {  
-            right = left;
-            if (right + 1 < A.length && A[right] < A[right + 1]) {
-                while (right + 1 < A.length && A[right] < A[right + 1]) {
-                    right++;
-                }
-                if (right + 1 < A.length && A[right] > A[right + 1]) {
-                    while (right + 1 < A.length && A[right] > A[right + 1]) {
-                        right++;
-                    }
-                    result = Math.max(result, right - left + 1);    
-                }
+        int res = 0;
+        int i = 1;
+        while (i < A.length) {
+            while (i < A.length && A[i - 1] == A[i]) {
+                i++;
             }
-            left = Math.max(right, left + 1);
+            
+            int up = 0;
+            while (i < A.length && A[i - 1] < A[i]) {
+                i++;
+                up++;
+            }
+            
+            int down = 0;
+            while (i < A.length && A[i - 1] > A[i]) {
+                i++;
+                down++;
+            }
+            
+            if (up > 0 && down > 0) {
+                res = Math.max(res, up + down + 1);
+            }
         }
-        return result;
+        return res;
     }
 }
 
