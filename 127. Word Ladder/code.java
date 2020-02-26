@@ -36,76 +36,97 @@
 //Explanation: The endWord "cog" is not in wordList, therefore no possible transformation.
 
 
+
+
 class Solution {
-    public int ladderLength(String start, String end, List<String> wordList) {
+    // bidirectional bfs
+    // Time: O(n * 26^l)  n: lengh of wordList, l: 
+    // Space: O(n)    
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
         Set<String> dict = new HashSet<>();
-        for (String word : wordList){
+        for (String word : wordList) {
             dict.add(word);
         }
-            
-        if (dict == null){
+        if (beginWord.equals(endWord) || !dict.contains(endWord)) {
             return 0;
         }
 
-        int length = 1;
+        Set<String> set1 = new HashSet<>();
+        Set<String> set2 = new HashSet<>();
+        Set<String> visited = new HashSet<>();
+        set1.add(beginWord);
+        set2.add(endWord);
+        visited.add(beginWord);
+        visited.add(endWord);
+        int step = 0;
 
-        if (start.equals(end)){
-            return length;
-        }
-
-        dict.add(start);
-
-        Queue<String> queue = new LinkedList<>();
-        Set<String> hashset = new HashSet<>();
-
-        queue.offer(start);
-        hashset.add(start);
-
-        while (!queue.isEmpty()){
-            length++;
-            int size = queue.size();
-            for (int i = 0; i < size; i++) {
-                String word = queue.poll();
-                for (String nextWords : getNextWords(word, dict)) {
-                    if (nextWords.equals(end)){
-                        return length;
+        while (!set1.isEmpty() && !set2.isEmpty()) {
+            step++;
+            Set<String> delete = new HashSet<>();
+            Set<String> add = new HashSet<>();
+            int counter = 0;
+            int size;
+            if (set1.size() < set2.size()) {
+                size = set1.size();
+                for (String word : set1) {
+                    counter++;
+                    delete.add(word);
+                    if (expand(dict, word, set1, visited, set2, add)) {
+                        return step + 1;
                     }
-
-                    if (hashset.add(nextWords)){
-                        queue.offer(nextWords);
+                    if (counter >= size) {
+                        break;
                     }
                 }
+                update(set1, delete, add);
+            } else {
+                size = set2.size();
+                for (String word : set2) {
+                    counter++;
+                    delete.add(word);
+                    if (expand(dict, word, set2, visited, set1, add)) {
+                        return step + 1;
+                    }
+                    if (counter >= size) {
+                        break;
+                    }
+                }
+                update(set2, delete, add);
             }
         }
-
-        return 0;        
+        return 0;
     }
-    
-    
-    private ArrayList<String> getNextWords(String word, Set<String> dict){
-        ArrayList<String> nextWords = new ArrayList<>();
-        for (int i = 0; i < word.length(); i++) {
-            for (char c = 'a'; c <= 'z'; c++){
-                if (word.charAt(i) == c){
+
+    private boolean expand(Set<String> dict, String word, Set<String> expandSet, Set<String> visited, Set<String> set, Set<String> add) {
+        char[] array = word.toCharArray();
+        for (int i = 0; i < array.length; i++) {
+            char ch = array[i];
+            for (char j = 'a'; j < 'z'; j++) {
+                array[i] = j;
+                String temp = new String(array);
+                if (set.contains(temp)) {
+                    return true;
+                }
+                if (visited.contains(temp) || !dict.contains(temp)) {
                     continue;
                 }
-
-                String nextWord = changeCharacter(word, i, c);
-                if (dict.contains(nextWord)){
-                    nextWords.add(nextWord);
-                }
+                add.add(temp);
+                visited.add(temp);
             }
+            array[i] = ch;
         }
-        return nextWords;
-    }    
-    
-    private String changeCharacter(String word, int index, char character){
-        char[] charArray = word.toCharArray();
-        charArray[index] = character;
-        String newWord = new String (charArray);
-        return newWord;
+        return false;
     }
-    
+
+    private void update(Set<String> set, Set<String> delete, Set<String> add) {
+        for (String word : delete) {
+            set.remove(word);
+        }
+        for (String word : add) {
+            set.add(word);
+        }
+    }
 }
+
 
 
