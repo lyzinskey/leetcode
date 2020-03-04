@@ -31,30 +31,43 @@
 
 
 class Solution {
-    public static List<String> addOperators(String num, int target) {
-        List<String> rst = new ArrayList<String>();
-        if (num == null || num.length() == 0) return rst;
-        helper(rst, "", num, target, 0, 0, 0);
-        return rst;
+    // Time: O(n^2 * 4^(n - 1))
+    // Space: O(n^2)
+    public List<String> addOperators(String num, int target) {
+        List<String> res = new ArrayList<>();
+        if (num == null || num.length() == 0) {
+            return res;
+        }
+        dfs(res, new StringBuilder(), num, target, 0, 0, 0);
+        return res;
     }
 
-    public static void helper(List<String> rst, String path, String num, int target, int pos, long eval, long multed) {
-        if (pos == num.length()) {
-            if (target == eval)
-                rst.add(path);
+    public void dfs(List<String> res, StringBuilder path, String num, int target, int index, long curr, long prev) {
+        if (index == num.length()) {
+            if (target == curr) {
+                res.add(path.toString());
+            }
             return;
         }
-        for (int i = pos; i < num.length(); i++) {
-            if (i != pos && num.charAt(pos) == '0') break;
-            long cur = Long.parseLong(num.substring(pos, i + 1));
-            if (pos == 0) {
-                helper(rst, path + cur, num, target, i + 1, cur, cur);
+        for (int i = index; i < num.length(); i++) {
+            // corner case: if current position is 0, we can only use it as a single digit number, should be 0
+            // if it is not a single digit number with leading 0, it should be considered as an invalid number             
+            if (i != index && num.charAt(index) == '0') {
+                break;
+            }
+            long temp = Long.parseLong(num.substring(index, i + 1));
+            int len = path.length();
+            // position 0 should be considered individually, since it does not have any operand character before curNum
+            if (index == 0) {
+                dfs(res, path.append(temp), num, target, i + 1, temp, temp);
+                path.setLength(len);
             } else {
-                helper(rst, path + "+" + cur, num, target, i + 1, eval + cur, cur);
-
-                helper(rst, path + "-" + cur, num, target, i + 1, eval - cur, -cur);
-
-                helper(rst, path + "*" + cur, num, target, i + 1, eval - multed + multed * cur, multed * cur);
+                dfs(res, path.append("+").append(temp), num, target, i + 1, curr + temp, temp);
+                path.setLength(len);
+                dfs(res, path.append("-").append(temp), num, target, i + 1, curr - temp, -temp);
+                path.setLength(len);
+                dfs(res, path.append("*").append(temp), num, target, i + 1, curr - prev + prev * temp, prev * temp);
+                path.setLength(len);
             }
         }
     }
