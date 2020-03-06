@@ -19,6 +19,32 @@
 
 
 
+class Solution {
+    // dp[i][j]: min cost to make up j amount using first i types of coins
+    // dp[i][j] = min(dp[i][j], dp[i][j - coin_i] + 1)
+    //
+    // Time: O(n * amount)
+    // Space: O(n * amount) -> O(amount)
+    public int coinChange(int[] coins, int amount) {
+        int[] dp = new int[amount + 1];
+        
+        for (int i = 1; i <= amount; i++) {
+            int min = Integer.MAX_VALUE;
+            for (int coin : coins) {
+                if (i >= coin && dp[i - coin] != -1) {
+                    min = Math.min(min, dp[i - coin]);
+                }                                
+            }
+            dp[i] = min == Integer.MAX_VALUE ? -1 : min + 1;            
+        }
+        
+        return dp[amount];
+    }
+}
+
+
+
+
 // DP: top down, recursion
 class Solution {
     public int coinChange(int[] coins, int amount) {
@@ -49,30 +75,6 @@ class Solution {
         }
         count[remain - 1] = (min == Integer.MAX_VALUE) ? -1 : min;
         return count[remain - 1];
-    }
-}
-
-
-
-
-// DP: bottom up, iteration
-class Solution {
-    public int coinChange(int[] coins, int amount) {
-        int[] dp = new int[amount + 1];
-        
-        for (int i = 1; i <= amount; i++) {
-            int min = Integer.MAX_VALUE;
-            
-            for (int coin : coins) {
-                if (i >= coin && dp[i - coin] != -1) {
-                    min = min < dp[i - coin] ? min : dp[i - coin];
-                }                                
-            }
-            
-            dp[i] = min == Integer.MAX_VALUE ? -1 : min + 1;            
-        }
-        
-        return dp[amount];
     }
 }
 
