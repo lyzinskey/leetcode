@@ -33,12 +33,10 @@ class Solution {
     // Space: O(n)
     public List<Integer> distanceK(TreeNode root, TreeNode target, int K) {
         List<Integer> res = new ArrayList<>();
-        distance(root, target, K, res);
+        distanceToTarget(root, target, K, res);
         return res;
     }
 
-    // Returns the distance from root to target.
-    // Returns -1 if target does not in the tree.
     // Returns the distance from root to target.
     // Returns -1 if target does not in the tree.
     private int distanceToTarget(TreeNode root, TreeNode target, int K, List<Integer> res) {
