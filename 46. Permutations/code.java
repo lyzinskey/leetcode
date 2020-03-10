@@ -14,37 +14,44 @@
 //  ]
 
 
-//recursion
+
+
+// recursion
 //
 class Solution {
+    // Time: O(n!)
+    // Space: O(n)
     public List<List<Integer>> permute(int[] nums) {
-        List<List<Integer>> result = new ArrayList<>();
-        
-        if (nums == null) {
-            return result;
+        List<List<Integer>> res = new ArrayList<>();
+        if (nums.length == 0) {
+            return res;
         }
-        
-        dfs(nums, result, new boolean[nums.length], new ArrayList<Integer>());
-        return result;
+        dfs(nums, 0, res);
+        return res;
     }
     
-    private void dfs(int[] nums, List<List<Integer>> result, boolean[] visited, ArrayList<Integer> list) {
-        if (nums.length == list.size()) {
-            result.add(new ArrayList<Integer> (list));
-            return;
-        }
-        
-        for (int i = 0; i < nums.length; i++) {
-            if (visited[i]) {
-                continue;
+    private void dfs(int[] nums, int index, List<List<Integer>> res) {		
+		if (index == nums.length) {   
+            List<Integer> list = new ArrayList<>();
+            for (int num : nums) {
+                list.add(num);
             }
-            list.add(nums[i]);
-            visited[i] = true;
-            dfs(nums, result, visited, list);
-            visited[i] = false;
-            list.remove(list.size() - 1);
-        }
-    }
+			res.add(list);
+			return;
+		}
+
+		for (int i = index; i < nums.length; i++) {			
+			swap(nums, i, index);
+			dfs(nums, index + 1, res);
+            swap(nums, i, index);
+		}
+	}   
+    
+    private void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }    
 }
 
 
@@ -103,5 +110,6 @@ class Solution {
         }
     }
 }
+
 
 
