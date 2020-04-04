@@ -46,6 +46,8 @@
  * }
  */
 class Solution {
+    // Time: O(nlogn)
+    // Space: O(n) 
     public List<List<Integer>> verticalTraversal(TreeNode root) {
         List<List<Integer>> res = new ArrayList<>();
         if (root == null) {
