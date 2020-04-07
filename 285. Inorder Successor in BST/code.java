@@ -32,7 +32,7 @@
  * }
  */
 class Solution {
-    // Time: O(n)
+    // Time: O(height)
     // Space: O(height)
     public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
         if (root == null) {
