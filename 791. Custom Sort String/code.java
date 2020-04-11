@@ -25,6 +25,8 @@
 
 
 class Solution {
+    // Time: O(S.length + T.length)
+    // Space: O(T.length)    
     public String customSortString(String S, String T) {
         // count[char] = the number of occurrences of 'char' in T.
         // This is offset so that count[0] = occurrences of 'a', etc.
