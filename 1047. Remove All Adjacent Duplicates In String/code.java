@@ -33,9 +33,7 @@ class Solution {
             if (res == -1 || array[res] != array[i]) {
                 array[++res] = array[i++];
             } else {
-                if (array[res] == array[i]) {
-                    i++;
-                }
+                i++;                
                 res--;
             }
         }
