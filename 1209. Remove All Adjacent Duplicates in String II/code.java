@@ -56,12 +56,12 @@ class Solution {
 
         StringBuilder stringBuilder = new StringBuilder();
         while (!stack.isEmpty()) {
-            Pair<Integer, Character> pair = stack.pop();
+            Pair<Integer, Character> pair = stack.pollLast();
             for (int i = 0; i < pair.getKey(); i++) {
                 stringBuilder.append(pair.getValue());
             }
         }
-        return stringBuilder.reverse().toString();
+        return stringBuilder.toString();
     }
 }
 
