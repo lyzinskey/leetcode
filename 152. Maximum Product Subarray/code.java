@@ -29,7 +29,8 @@ class Solution {
         for (int i = 1; i < nums.length; i++) {
             prevMax = Math.max(nums[i], Math.max(max * nums[i], min * nums[i]));
             prevMin = Math.min(nums[i], Math.min(max * nums[i], min * nums[i]));            
-            res = Math.max(res, Math.max(prevMax, prevMin));
+            // 这里只要比较res和prevMax就行了
+            res = Math.max(res, prevMax);
             max = prevMax;
             min = prevMin;
         }
